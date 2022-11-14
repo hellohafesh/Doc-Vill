@@ -24,7 +24,7 @@ const InfoCard = () => {
         {
             id: 3,
             name: 'Contact us now',
-            description: 'Tel : +96533623 , Call : +8801153-128862 ',
+            description: 'Tel : +96533623 ,Call : +8801153-128862 ',
             icon: phone,
             bgClass: 'bg-gradient-to-r from-primary  to-secondary'
         },

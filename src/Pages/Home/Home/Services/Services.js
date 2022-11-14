@@ -32,7 +32,7 @@ const Services = () => {
         <div className=''>
             <div className="text-center mt-20">
                 <p className='text-primary font-bold uppercase'>Our Service</p>
-                <h1 className='text-4xl'>Services We Provide</h1>
+                <h1 className='text-3xl md:text-4xl lg:text-5xl '>Services We Provide</h1>
             </div>
             <div className="">
                 <div className="grid gap-[34px] mt-20 grid-cols-1  md:grid-cols-2 lg:grid-cols-3">
