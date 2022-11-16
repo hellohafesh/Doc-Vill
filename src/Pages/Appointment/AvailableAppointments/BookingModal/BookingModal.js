@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { format } from 'date-fns';
+import { AuthContext } from '../../../../Context/AuthProvider';
+import toast from 'react-hot-toast';
 
 const BookingModal = ({ treatment, setTreatment, selectedDate }) => {
     const date = format(selectedDate, 'PP');
+    const { user } = useContext(AuthContext);
 
     const handleBooking = event => {
         event.preventDefault();
@@ -21,8 +24,23 @@ const BookingModal = ({ treatment, setTreatment, selectedDate }) => {
             phone
 
         }
-        console.log(booking);
-        setTreatment(null)
+
+        fetch('http://localhost:7000/appiontmentBooking', {
+            method: 'POST',
+            headers: {
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify(booking)
+        })
+            .then(res => res.json())
+            .then(data => {
+                console.log(data)
+                if (data.acknowledged) {
+                    setTreatment(null)
+                    toast.success('Appiontment Booking Submit')
+                }
+            })
+
 
     }
     return (
@@ -39,8 +57,8 @@ const BookingModal = ({ treatment, setTreatment, selectedDate }) => {
                             {treatment.slots.map((slot, i) => <option value={slot} key={i}>{slot}</option>
                             )}
                         </select>
-                        <input type="text" name="name" placeholder="Your Name" className="input input-bordered input-primary w-full  " />
-                        <input type="text" name="email" placeholder="Your Email" className="input input-bordered input-primary w-full  " />
+                        <input type="text" name="name" defaultValue={user?.displayName} placeholder="Your Name" className="input input-bordered input-primary w-full  " />
+                        <input type="text" name="email" defaultValue={user?.email} disabled placeholder="Your Email" className="input input-bordered input-primary w-full  " />
                         <input type="text" name="phone" placeholder="Your Phone" className="input input-bordered input-primary w-full  " />
                         <input type="Submit" value="Submit" className=" btn w-full  " />
                     </form>
