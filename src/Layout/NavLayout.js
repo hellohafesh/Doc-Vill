@@ -4,11 +4,11 @@ import Nav from '../Pages/Shared/Nav/Nav';
 
 const NavLayout = () => {
     return (
-        <div>
+        <>
             <Nav></Nav>
             <Outlet></Outlet>
 
-        </div>
+        </>
     );
 };
 

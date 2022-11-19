@@ -3,7 +3,8 @@ import { format } from 'date-fns';
 import { AuthContext } from '../../../../Context/AuthProvider';
 import toast from 'react-hot-toast';
 
-const BookingModal = ({ treatment, setTreatment, selectedDate }) => {
+const BookingModal = ({ treatment, setTreatment, selectedDate, refetch }) => {
+
     const date = format(selectedDate, 'PP');
     const { user } = useContext(AuthContext);
 
@@ -37,7 +38,12 @@ const BookingModal = ({ treatment, setTreatment, selectedDate }) => {
                 console.log(data)
                 if (data.acknowledged) {
                     setTreatment(null)
-                    toast.success('Appiontment Booking Submit')
+                    toast.success('Appiontment Booking Submit');
+                    refetch();
+                } else {
+                    toast.error(data.message);
+                    setTreatment(null);
+
                 }
             })
 

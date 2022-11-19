@@ -7,11 +7,11 @@ import toast from 'react-hot-toast';
 const Signup = () => {
     const { register, formState: { errors }, handleSubmit } = useForm();
     const { createUser, updateUser } = useContext(AuthContext);
-    const [signupError, seSignupError] = useState('');
+    const [signupError, setSignupError] = useState('');
     const navigate = useNavigate();
     const handleSignup = data => {
         console.log(data);
-        seSignupError('')
+        setSignupError('')
         createUser(data.email, data.password)
             .then(result => {
                 const user = result.user;
@@ -22,16 +22,33 @@ const Signup = () => {
                 }
                 updateUser(userInfo)
                     .then(() => {
-                        navigate('/');
+                        saveUser(data.name, data.email);
                     })
                     .catch((error) => console.log(error));
             })
             .catch((error) => {
                 const message = error.message;
                 console.log(message);
-                seSignupError(message);
+                setSignupError(message);
             });
     };
+
+    const saveUser = (name, email) => {
+        const user = { name, email };
+        fetch('http://localhost:7000/users', {
+            method: 'POST',
+            headers: {
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify(user)
+
+        })
+            .then(res => res.json())
+            .then(data => {
+                console.log('user', data);
+                navigate('/');
+            })
+    }
     return (
         <div className='h-[800px] flex justify-center items-center'>
 
