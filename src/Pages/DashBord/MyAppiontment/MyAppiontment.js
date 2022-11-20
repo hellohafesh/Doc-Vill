@@ -4,11 +4,16 @@ import { AuthContext } from '../../../Context/AuthProvider';
 
 const MyAppiontment = () => {
     const { user } = useContext(AuthContext);
+
     const url = `http://localhost:7000/appiontmentBooking?email=${user?.email}`;
     const { data: bookings = [] } = useQuery({
         queryKey: ['bookings', user?.email],
         queryFn: async () => {
-            const res = await fetch(url);
+            const res = await fetch(url, {
+                headers: {
+                    authorization: `bearer ${localStorage.getItem('accessToken')}`
+                }
+            });
             const data = await res.json();
             return data;
         }
@@ -28,8 +33,8 @@ const MyAppiontment = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {
-                            bookings.map((booking, i) => <tr key={i}>
+                        {bookings.length &&
+                            bookings?.map((booking, i) => <tr key={i}>
                                 <th>{i + 1}</th>
                                 <td>{booking.name}</td>
                                 <td>{booking.treatment}</td>
